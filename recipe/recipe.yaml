@@ -26,6 +26,7 @@ requirements:
     - if: linux
       then:
         - gtk3
+        - expat
         - glib
         - xorg-xproto
         - xorg-kbproto

@@ -1,0 +1,30 @@
+From 630e7d7d0e16325cdc423c093292e56e3aa96cd2 Mon Sep 17 00:00:00 2001
+From: Olivier Roussel <olivier.roussel31@gmail.com>
+Date: Wed, 11 Nov 2026 11:01:22 +0100
+Subject: [PATCH] patch for condaforge wayland-protocols package support
+
+---
+ src/CMakeLists.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 2c86719..ce4e7ed 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -31,9 +31,11 @@ if(nfd_PLATFORM STREQUAL PLATFORM_LINUX)
+   option(NFD_X11 "Support X11 on Linux" ON)
+   option(NFD_WAYLAND "Support Wayland on Linux" ON)
+   if(NFD_WAYLAND)
+-    pkg_check_modules(WAYLAND REQUIRED wayland-client)
++    # for conda-forge package: look for wayland-protocols package
++    pkg_check_modules(WAYLAND REQUIRED wayland-protocols)
+     message(STATUS "Using Wayland version: ${WAYLAND_VERSION}")
+-    set(NFD_WAYLAND_PROTOCOL_XDG_FOREIGN ${CMAKE_CURRENT_SOURCE_DIR}/../3ps/wayland-protocols/unstable/xdg-foreign/xdg-foreign-unstable-v1.xml)
++    pkg_get_variable(WAYLAND_PROTOCOLS_DIR wayland-protocols pkgdatadir)
++    set(NFD_WAYLAND_PROTOCOL_XDG_FOREIGN ${WAYLAND_PROTOCOLS_DIR}/unstable/xdg-foreign/xdg-foreign-unstable-v1.xml)
+     add_custom_command(
+       OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xdg-foreign-unstable-v1.h
+       COMMAND wayland-scanner client-header < ${NFD_WAYLAND_PROTOCOL_XDG_FOREIGN} > ${CMAKE_CURRENT_BINARY_DIR}/xdg-foreign-unstable-v1.h
+-- 
+2.43.0
+

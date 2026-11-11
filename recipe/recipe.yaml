@@ -11,6 +11,9 @@ source:
   url: https://github.com/btzy/nativefiledialog-extended/archive/refs/tags/v${{ version }}.tar.gz
   sha256: 4a01eafa921169f009f3e83bea8e287d9e5d0b94ca9064cf7f0a546652d7c884
 
+  patches:
+    - patches/0001-patch-for-condaforge-wayland-protocols-package-suppo.patch
+
 build:
   number: 0
 
@@ -44,6 +47,7 @@ requirements:
         # So we restrict xfixes version here to v5 to have a compatible fixesproto version available.
         - xorg-libxfixes <6.0.0
         - liblzma-devel
+        - wayland-protocols
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x.x') }}
 
